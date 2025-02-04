@@ -73,21 +73,21 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user_serializer.id
+            session['user_type'] = 'user'
             return redirect(url_for('hello'))
         
         flash(error)
     return render_template("auth/user/login.html", user_type="User")
 
-@bp.before_app_request
-def load_logged_in_user():
-    user_id = session.get("user_id")
-    print(user_id)
-    if user_id is None:
-        g.user = None
-    else:
-        g.user = get_db().execute(
-            text("SELECT * FROM user WHERE id = %s;" % user_id)
-        ).fetchone()
+@bp.route("/update", methods=['GET', "POST"])
+def update():
+    if request.method == "POST":
+        first_name = request.form['first-name']
+        last_name = request.form['last-name']
+        
+    return render_template("auth/user/update.html")
+
+
         
 @bp.route("/logout")
 def logout():

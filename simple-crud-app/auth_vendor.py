@@ -39,7 +39,7 @@ def register():
                     text(
                         "INSERT INTO vendor (username, password) VALUES ('%s', '%s')" %
                         (username, generate_password_hash(password))
-                   )
+                    )
                 )
                 db.commit()
             except Exception as e:
@@ -63,6 +63,9 @@ def login():
             text("SELECT * FROM vendor WHERE username = '%s'" % username)
         ).fetchone()
         
+        if not user:
+            return redirect(url_for("hello"))
+        
         user_serializer = UserLoginSerializer(*user)
         
         if user is None:
@@ -73,21 +76,27 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user_serializer.id
+            session['user_type'] = 'vendor'
             return redirect(url_for('hello'))
         
         flash(error)
     return render_template("auth/vendor/login.html", user_type="Vendor")
 
-@bp.before_app_request
-def load_logged_in_user():
-    user_id = session.get("user_id")
-    print(user_id)
-    if user_id is None:
-        g.user = None
-    else:
-        g.user = get_db().execute(
-            text("SELECT * FROM vendor WHERE id = %s;" % user_id)
-        ).fetchone()
+@bp.route("/update", methods=['GET', 'POST'])
+def update():
+    user = g.get("user", None)
+    user_type = g.get("user_type", None)
+    print("Update: {user_id} {user_type}".format(user_id=user, user_type=user_type))
+    if not user or not user_type:
+        return redirect(url_for("auth_vendor.login"))
+    if request.method == "POST":
+        first_name = request.form['first-name']
+        last_name = request.form['last-name']
+        print(first_name, last_name)
+        return redirect(url_for('auth_vendor.'))
+    return redirect(url_for("auth_vendor.login"))
+
+
         
 @bp.route("/logout")
 def logout():

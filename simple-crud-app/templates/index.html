@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click here</title>
-</head>
-<body>
-    <div>
-        <a href="/auth/user/login">User</a>
-    </div>
-    <div>
-        <a href="/auth/vendor/login">Vendor</a>
-    </div>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Home{% endblock title %}
+{% block content %}
+<div>
+    <a href="/auth/user/login">User</a>
+</div>
+<div>
+    <a href="/auth/vendor/login">Vendor</a>
+</div>
+{% endblock content %}
