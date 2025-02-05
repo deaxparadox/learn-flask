@@ -18,7 +18,7 @@ from simple_crud_api.serializer import UserCreateSerializer, UserLoginSerializer
 from simple_crud_api.database import db_session
 from ..models.vendor import Vendor
 
-bp = Blueprint("auth_vendor", __name__, url_prefix="/auth/vendor")
+bp = Blueprint("auth_vendor", __name__, url_prefix="/api/vendor")
 
 
 @bp.route("/register", methods=("GET", "POST"))

@@ -15,3 +15,8 @@ class UserLoginSerializer:
     password: str
     first_name: str
     lastname: str
+    
+@dataclass
+class UserRegisterSerializer:
+    username: str
+    password: str

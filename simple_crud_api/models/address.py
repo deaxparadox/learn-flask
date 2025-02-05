@@ -13,5 +13,5 @@ class Address(Base):
     country = Column(String(50))
     pincode = Column(String(50), nullable=True)
     
-    user_id = Column(Integer, ForeignKey("user.id"))
+    user_id = Column(Integer, ForeignKey("user.id", ondelete="SET NULL"), nullable=True)
     user = relationship("User", back_populates="address")
