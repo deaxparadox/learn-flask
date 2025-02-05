@@ -46,7 +46,7 @@ def register():
                 print(e)
                 error = f"User {username} is already registered"
             else:
-                return redirect(url_for("auth_vendor.login"))
+                return redirect(url_for("auth_user.login"))
         flash(error)
         
     return render_template("auth/user/register.html", user_type="User")
@@ -74,7 +74,7 @@ def login():
             session.clear()
             session['user_id'] = user_serializer.id
             session['user_type'] = 'user'
-            return redirect(url_for('hello'))
+            return redirect(url_for('index.hello'))
         
         flash(error)
     return render_template("auth/user/login.html", user_type="User")
@@ -84,7 +84,6 @@ def update():
     if request.method == "POST":
         first_name = request.form['first-name']
         last_name = request.form['last-name']
-        
     return render_template("auth/user/update.html")
 
 

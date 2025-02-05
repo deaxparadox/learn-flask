@@ -64,7 +64,7 @@ def login():
         ).fetchone()
         
         if not user:
-            return redirect(url_for("hello"))
+            return redirect(url_for("index.hello"))
         
         user_serializer = UserLoginSerializer(*user)
         
@@ -77,7 +77,7 @@ def login():
             session.clear()
             session['user_id'] = user_serializer.id
             session['user_type'] = 'vendor'
-            return redirect(url_for('hello'))
+            return redirect(url_for('index.hello'))
         
         flash(error)
     return render_template("auth/vendor/login.html", user_type="Vendor")
