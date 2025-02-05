@@ -65,7 +65,7 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user.id
-            session['user_type'] = 'vendor'
+            session['user_type'] = 'user'
             return redirect(url_for('auth_user.login'))
         
         flash(error)
@@ -73,15 +73,20 @@ def login():
 
 @bp.route("/update", methods=['GET', 'POST'])
 def update():
-    user = g.get("user", None)
-    user_type = g.get("user_type", None)
-    if not user or not user_type:
+    user_id = session.get("user_id", None)
+    user_type = session.get("user_type", None)
+    if not user_id or not user_type:
         return redirect(url_for("auth_vendor.login"))
     if request.method == "POST":
         first_name = request.form['first-name']
         last_name = request.form['last-name']
-        return redirect(url_for('auth_vendor.'))
-    return redirect(url_for("auth_vendor.login"))
+        user = db_session.query(User).where(User.id==user_id).one()
+        user.first_name = first_name
+        user.last_name = last_name
+        db_session.add(user)
+        db_session.commit()
+        return redirect(url_for('auth_user.update'))
+    return render_template("auth/user/update.html")
 
 
         
