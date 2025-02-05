@@ -53,7 +53,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         error = None
-        vendor = db_session.query(Vendor).where(username==username).one()
+        vendor = db_session.query(Vendor).where(Vendor.username==username).one()
         
         # vendor_serializer = UserLoginSerializer(vendor.username, vendor.password)
         

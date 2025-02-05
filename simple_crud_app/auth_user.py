@@ -41,7 +41,7 @@ def register():
             except Exception as e:
                 error = f"Vendor {username} is already registered"
             else:
-                return redirect(url_for("auth_vendor.login"))
+                return redirect(url_for("auth_user.login"))
         flash(error)
         
     return render_template("auth/user/register.html", user_type="User")
@@ -53,7 +53,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         error = None
-        user = db_session.query(User).where(username==username).one()
+        user = db_session.query(User).where(User.username==username).one()
         
         # vendor_serializer = UserLoginSerializer(vendor.username, vendor.password)
         
@@ -66,7 +66,7 @@ def login():
             session.clear()
             session['user_id'] = user.id
             session['user_type'] = 'user'
-            return redirect(url_for('auth_user.login'))
+            return redirect(url_for('auth_user.update'))
         
         flash(error)
     return render_template("auth/user/login.html", user_type="User")
