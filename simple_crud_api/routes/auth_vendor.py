@@ -16,7 +16,7 @@ from werkzeug.security import (
 from sqlalchemy import text
 from simple_crud_api.serializer import UserCreateSerializer, UserLoginSerializer
 from simple_crud_api.database import db_session
-from simple_crud_api.models import Vendor
+from ..models.vendor import Vendor
 
 bp = Blueprint("auth_vendor", __name__, url_prefix="/auth/vendor")
 

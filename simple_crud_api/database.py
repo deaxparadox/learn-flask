@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker, declarative_base
-from .routes import settings
+from . import settings
 
 engine = create_engine(settings.DATABASE_URL, echo=True)
 db_session = scoped_session(
@@ -16,6 +16,7 @@ Base.query = db_session.query_property()
 
 
 def init_db():
-    from .routes import models
+    from .models import user, vendor
+    
     Base.metadata.create_all(bind=engine)
     

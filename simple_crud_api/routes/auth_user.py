@@ -16,7 +16,7 @@ from werkzeug.security import (
 from sqlalchemy import text
 from simple_crud_api.serializer import UserCreateSerializer, UserLoginSerializer
 from simple_crud_api.database import db_session
-from simple_crud_api.models import User
+from ..models.user import User
 
 bp = Blueprint("auth_user", __name__, url_prefix="/auth/user")
 
