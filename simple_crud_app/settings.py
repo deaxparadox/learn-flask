@@ -8,5 +8,3 @@ HOST = os.environ.get("HOST")
 PORT = os.environ.get("PORT")
 
 DATABASE_URL = f'mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}'
-
-# print(DATABASE_URL)

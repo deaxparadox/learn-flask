@@ -39,7 +39,6 @@ def register():
                 db_session.add(vendor)
                 db_session.commit()
             except Exception as e:
-                print(e)
                 error = f"Vendor {username} is already registered"
             else:
                 return redirect(url_for("auth_vendor.login"))
@@ -76,13 +75,11 @@ def login():
 def update():
     user = g.get("user", None)
     user_type = g.get("user_type", None)
-    print("Update: {user_id} {user_type}".format(user_id=user, user_type=user_type))
     if not user or not user_type:
         return redirect(url_for("auth_vendor.login"))
     if request.method == "POST":
         first_name = request.form['first-name']
         last_name = request.form['last-name']
-        print(first_name, last_name)
         return redirect(url_for('auth_vendor.'))
     return redirect(url_for("auth_vendor.login"))
 
