@@ -41,7 +41,7 @@ def create_app(test_config=None):
         pass
     
     
-    init_db()
+    # init_db()
     # 
     # init_app(app)
     
