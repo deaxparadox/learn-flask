@@ -10,9 +10,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from . import settings
-    
 from . import auth_user, auth_vendor, index
-from .db import init_app, get_db
+# from .db import init_app, get_db
+from .database import db_session, init_db
 
 
 # app factory function
@@ -40,7 +40,9 @@ def create_app(test_config=None):
         pass
     
     
-    init_app(app)
+    init_db()
+    # 
+    # init_app(app)
     
     @app.before_request
     def check_user_login_type():
@@ -52,7 +54,7 @@ def create_app(test_config=None):
             g.user = None
             g.user_type = None
         else:
-            g.user = get_db().execute(
+            g.user = db_session().execute(
                 text("SELECT * FROM %s WHERE id = %s;" % (user_type, user_id))
             ).fetchone()
             g.user_type = user_type
@@ -61,5 +63,8 @@ def create_app(test_config=None):
     app.register_blueprint(auth_user.bp)
     app.register_blueprint(auth_vendor.bp)
 
+    @app.teardown_appcontext
+    def shutdown_session(exception=None):
+        db_session.remove()
 
     return app

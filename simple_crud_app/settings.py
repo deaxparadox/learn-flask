@@ -1,5 +1,4 @@
 import os
-from dotenv import load_dotenv
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 USERNAME = os.environ.get("USERNAME")
@@ -10,4 +9,4 @@ PORT = os.environ.get("PORT")
 
 DATABASE_URL = f'mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}'
 
-print(DATABASE_URL)
+# print(DATABASE_URL)

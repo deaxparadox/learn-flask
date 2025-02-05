@@ -15,9 +15,10 @@ from werkzeug.security import (
 )
 from sqlalchemy import text
 from .serializer import UserCreateSerializer, UserLoginSerializer
-from .db import get_db
+from .database import db_session
+from .models import User
 
-bp = Blueprint("auth_vendor", __name__, url_prefix="/auth/vendor")
+bp = Blueprint("auth_user", __name__, url_prefix="/auth/user")
 
 
 @bp.route("/register", methods=("GET", "POST"))
@@ -25,7 +26,6 @@ def register():
     if request.method == "POST":
         username = request.form['username']
         password = request.form['password']
-        db = get_db()
         error = None
         
         if not username:
@@ -35,13 +35,9 @@ def register():
         
         if error is None:
             try:
-                db.execute(
-                    text(
-                        "INSERT INTO vendor (username, password) VALUES ('%s', '%s')" %
-                        (username, generate_password_hash(password))
-                    )
-                )
-                db.commit()
+                user = User(username, generate_password_hash(password))
+                db_session.add(user)
+                db_session.commit()
             except Exception as e:
                 print(e)
                 error = f"Vendor {username} is already registered"
@@ -49,7 +45,7 @@ def register():
                 return redirect(url_for("auth_vendor.login"))
         flash(error)
         
-    return render_template("auth/vendor/register.html", user_type="Vendor")
+    return render_template("auth/user/register.html", user_type="User")
 
 
 @bp.route("/login", methods=("GET", "POST"))
@@ -57,30 +53,24 @@ def login():
     if request.method == "POST":
         username = request.form['username']
         password = request.form['password']
-        db = get_db()
         error = None
-        user = db.execute(
-            text("SELECT * FROM vendor WHERE username = '%s'" % username)
-        ).fetchone()
+        user = db_session.query(User).where(username==username).one()
         
-        if not user:
-            return redirect(url_for("index.hello"))
-        
-        user_serializer = UserLoginSerializer(*user)
+        # vendor_serializer = UserLoginSerializer(vendor.username, vendor.password)
         
         if user is None:
             error = "Incorrect username."
-        elif not check_password_hash(user_serializer.password, password):
+        elif not check_password_hash(user.password, password):
             error = 'Incorrect pasword'
             
         if error is None:
             session.clear()
-            session['user_id'] = user_serializer.id
+            session['user_id'] = user.id
             session['user_type'] = 'vendor'
-            return redirect(url_for('index.hello'))
+            return redirect(url_for('auth_user.login'))
         
         flash(error)
-    return render_template("auth/vendor/login.html", user_type="Vendor")
+    return render_template("auth/user/login.html", user_type="User")
 
 @bp.route("/update", methods=['GET', 'POST'])
 def update():
@@ -101,5 +91,5 @@ def update():
 @bp.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("auth_vendor.login"))
+    return redirect(url_for("auth_user.login"))
 
