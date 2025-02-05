@@ -103,9 +103,9 @@ def delete():
     #     return redirect(url_for("auth_user.login"))
     user = db_session.query(Vendor).where(Vendor.id==user_id).one()
     user.active = False
-    # db_session.(user)
+    db_session.add(user)
     db_session.commit()
     session.clear()
     g.user = None
     g.user_type = None
-    return redirect(url_for("auth_user.register"))
+    return redirect(url_for("auth_vendor.register"))
