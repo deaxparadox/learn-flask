@@ -5,12 +5,20 @@ import pymysql
 import click
 from flask import current_app, g
 
+from . import settings
 
-engine = create_engine('mysql+pymysql://paradox:796300@localhost:3306/flask', echo=True)
+
+
+engine = create_engine(
+    settings.DATABASE_URL, 
+    echo=True
+)
 
 
 
 def get_db():
+    
+    
     if "db" not in g:
         g.db = engine.connect()
     return g.db

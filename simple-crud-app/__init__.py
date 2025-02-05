@@ -5,6 +5,11 @@ from flask import (
     render_template, session
 )
 from sqlalchemy import text
+from dotenv import load_dotenv
+
+load_dotenv()
+
+from . import settings
 
 # app factory function
 def create_app(test_config=None):
@@ -15,8 +20,7 @@ def create_app(test_config=None):
     )
 
     app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        SECRET_KEY=settings.SECRET_KEY
     )
     
     if test_config is None:
