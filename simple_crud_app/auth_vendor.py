@@ -95,3 +95,17 @@ def logout():
     session.clear()
     return redirect(url_for("auth_vendor.login"))
 
+@bp.route('/delete')
+def delete():
+    user_id = session.get("user_id")
+    user_type = session.get("user_type")
+    # if not user_id or not user_type:
+    #     return redirect(url_for("auth_user.login"))
+    user = db_session.query(Vendor).where(Vendor.id==user_id).one()
+    user.active = False
+    # db_session.(user)
+    db_session.commit()
+    session.clear()
+    g.user = None
+    g.user_type = None
+    return redirect(url_for("auth_user.register"))

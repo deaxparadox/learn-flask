@@ -48,7 +48,7 @@ def create_app(test_config=None):
     def check_user_login_type():
         user_id = session.get("user_id")
         user_type = session.get("user_type")
-
+        print(user_id, user_type)
         if not user_id and not user_type:
             g.user = None
             g.user_type = None

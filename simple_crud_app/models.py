@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String, Column
+from sqlalchemy import Integer, String, Column, Boolean
 
 from .database import Base
 
@@ -10,6 +10,7 @@ class User(Base):
     password = Column(String(1000))
     first_name = Column(String(50), nullable=True)
     last_name = Column(String(50), nullable=True)
+    active = Column(Boolean, default=True)
     
     def __init__(self, username, password):
         self.username = username
@@ -23,6 +24,7 @@ class Vendor(Base):
     password = Column(String(1000))
     first_name = Column(String(50), nullable=True)
     last_name = Column(String(50), nullable=True)
+    active = Column(Boolean, default=True)
     
     def __init__(self, username, password):
         self.username = username
