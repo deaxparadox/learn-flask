@@ -53,9 +53,13 @@ def login():
         username = request.form['username']
         password = request.form['password']
         error = None
+        
         vendor = db_session.query(Vendor).where(Vendor.username==username).one()
         
-        # vendor_serializer = UserLoginSerializer(vendor.username, vendor.password)
+        if not vendor.active:
+            error ="Inactive vendor, contact administrator"
+            flash(error)
+            return redirect(url_for("auth_vendor.register"))
         
         if vendor is None:
             error = "Incorrect username."
@@ -85,8 +89,8 @@ def update():
         vendor.last_name = last_name
         db_session.add(vendor)
         db_session.commit()
-        return redirect(url_for('auth_vendor.update'))
-    return render_template("auth/vendor/update.html")
+        return redirect(url_for('auth_vendor.update', user_type='Vendor'))
+    return render_template("auth/vendor/update.html", user_type='Vendor')
 
 
         

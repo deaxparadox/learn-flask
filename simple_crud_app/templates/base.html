@@ -4,13 +4,8 @@
 <nav>
   <h1>Simple CRUD app</h1>
   <ul>
-    {% if g.user %}
-      <li><span>{{ g.user['username'] }}</span>
-      <li><a href="{% if user_type == "User" %}{{ url_for('auth_user.logout') }}{% else %}{{ url_for('auth_vendor.logout') }}{% endif %}">Log Out</a>
-    {% else %}
-      <li><a href="{% if user_type=="User" %}{{ url_for('auth_user.register') }}{% else %}{{ url_for('auth_vendor.register') }}{% endif %}">Register</a>
-      <li><a href="{% if user_type=="User" %}{{ url_for('auth_user.login') }}{% else %}{{ url_for('auth_vendor.login') }}{% endif %}">Log In</a>
-    {% endif %}
+    <li><a href="/">Home</a></li>
+    {% block list %}{% endblock %}
   </ul>
 </nav>
 <section class="content">

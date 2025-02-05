@@ -57,6 +57,11 @@ def login():
         
         # vendor_serializer = UserLoginSerializer(vendor.username, vendor.password)
         
+        if not user.active:
+            error ="Inactive vendor, contact administrator"
+            flash(error)
+            return redirect(url_for("auth_vendor.register"))
+        
         if user is None:
             error = "Incorrect username."
         elif not check_password_hash(user.password, password):
@@ -85,8 +90,8 @@ def update():
         user.last_name = last_name
         db_session.add(user)
         db_session.commit()
-        return redirect(url_for('auth_user.update'))
-    return render_template("auth/user/update.html")
+        return redirect(url_for('auth_user.update', user_type='User'))
+    return render_template("auth/user/update.html", user_type='User')
 
 
         

@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
+{% block list %}
+  {% if g.user %}
+    <li><span>{{ g.user['username'] }}</span>
+    <li><a href="{{ url_for('auth_vendor.logout') }}">Log Out</a>
+  {% else %}
+    <li><a href="{{ url_for('auth_vendor.register') }}">Register</a>
+    <li><a href="{{ url_for('auth_vendor.login') }}">Log In</a>
+  {% endif %}
+{% endblock %}
+
 {% block header %}
     <h1>{% block title %}{{user_type}} Register{% endblock title %}</h1>
 {% endblock header %}
