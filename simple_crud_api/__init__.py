@@ -40,24 +40,6 @@ def create_app(test_config=None):
     except OSError:
         pass
     
-    
-    # init_db()
-    # 
-    # init_app(app)
-    
-    # @app.before_request
-    # def check_user_login_type():
-    #     user_id = session.get("user_id")
-    #     user_type = session.get("user_type")
-    #     print(user_id, user_type)
-    #     if not user_id and not user_type:
-    #         g.user = None
-    #         g.user_type = None
-    #     else:
-    #         g.user = db_session().execute(
-    #             text("SELECT * FROM %s WHERE id = %s;" % (user_type, user_id))
-    #         ).fetchone()
-    #         g.user_type = user_type
 
     app.register_blueprint(index.bp)
     app.register_blueprint(auth_user.bp)

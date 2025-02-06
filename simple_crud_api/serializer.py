@@ -20,3 +20,4 @@ class UserLoginSerializer:
 class UserRegisterSerializer:
     username: str
     password: str
+    user_type: int | None = None
